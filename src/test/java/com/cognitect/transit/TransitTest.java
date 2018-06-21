@@ -20,7 +20,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.apache.commons.codec.binary.Base64;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -187,8 +186,8 @@ public class TransitTest extends TestCase {
     public void testReadBinary() throws IOException {
 
         byte[] bytes = "foobarbaz".getBytes();
-        byte[] encodedBytes = Base64.encodeBase64(bytes);
-        byte[] decoded = (byte[])reader("\"~b" + new String(encodedBytes) + "\"").read();
+        String encodedBytes = Util.encodeBase64(bytes);
+        byte[] decoded = (byte[])reader("\"~b" + encodedBytes + "\"").read();
 
         assertEquals(bytes.length, decoded.length);
 
@@ -557,9 +556,9 @@ public class TransitTest extends TestCase {
     public void testWriteBinary() throws Exception {
 
         byte[] bytes = "foobarbaz".getBytes();
-        byte[] encodedBytes = Base64.encodeBase64(bytes);
+        String encodedBytes = Util.encodeBase64(bytes);
 
-        assertEquals(scalarVerbose("\"~b" + new String(encodedBytes) + "\""), writeJsonVerbose(bytes));
+        assertEquals(scalarVerbose("\"~b" + encodedBytes + "\""), writeJsonVerbose(bytes));
     }
 
     public void testWriteSymbol() throws Exception {
